@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dapur Kilat — Rush Kitchen</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍳%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="kitchen" id="kitchen">
+  <header class="hud">
+    <div class="brand"><span class="brand-glyph">🍳</span>
+      <span class="brand-name">Dapur Kilat</span>
+      <span class="brand-sub">Rush Kitchen</span>
+    </div>
+    <div class="hud-box"><span class="hud-label">Score</span>
+      <span class="hud-value" id="score">0</span>
+      <span class="gain" id="gain"></span>
+    </div>
+    <div class="hud-box"><span class="hud-label">Served</span>
+      <span class="hud-value" id="served">0</span>
+      <span class="hud-small">failed <b id="failed">0</b></span>
+    </div>
+    <div class="hud-box"><span class="hud-label">Combo</span>
+      <span class="hud-value" id="combo">×0</span>
+      <span class="hud-small">level <b id="level">1</b></span>
+    </div>
+    <div class="hud-box timer-box"><span class="hud-label">Shift timer</span>
+      <span class="hud-value timer" id="shift-timer">3:00</span>
+      <span class="bar"><span class="bar-fill" id="shift-bar"></span></span>
+    </div>
+    <div class="hud-box target-box"><span class="hud-label" id="target-text">Target 600 · 0%</span>
+      <span class="bar"><span class="bar-fill gold" id="target-bar"></span></span>
+      <span class="hud-small">3 stars at 600 pts</span>
+    </div>
+    <div class="hud-buttons">
+      <button type="button" id="btn-mute">🔊 Sound</button>
+      <button type="button" id="btn-pause">⏸ Pause</button>
+      <button type="button" id="btn-restart">↻ Restart</button>
+    </div>
+  </header>
+
+  <main class="floor">
+    <section class="board" aria-label="Order board">
+      <h2>📋 Order Board <span class="count" id="board-count">3 tickets</span></h2>
+      <div id="order-list" class="order-list"></div>
+      <p class="board-tip">Click a ticket, or press Q / W / E — Tab cycles. Serve before its clock runs out.</p>
+    </section>
+
+    <section class="station" aria-label="Cooking station">
+      <h2>🍽️ Your Plate <span class="plate-dish" id="plate-dish">No ticket</span></h2>
+      <div class="plate-wrap">
+        <div class="plate" id="plate"></div>
+        <p class="plate-state" id="plate-state">Waiting for ingredients</p>
+        <p class="plate-progress" id="plate-progress">Select a ticket first</p>
+      </div>
+      <div class="burners" id="burners" aria-hidden="true">
+        <span class="burner on"></span><span class="burner"></span>
+        <span class="burner on"></span><span class="burner"></span>
+      </div>
+      <div class="serve-row">
+        <button type="button" id="btn-serve" class="serve">🍽 Serve — Space</button>
+        <button type="button" id="btn-clear" class="clear">✕ Clear plate — X</button>
+      </div>
+    </section>
+  </main>
+
+  <section class="counter-zone" aria-label="Ingredient counter">
+    <h2>🧺 Ingredients on the counter <span class="counter-tip">Click, or press 1–8</span></h2>
+    <div class="counter" id="counter"></div>
+  </section>
+
+  <p class="message info" id="message">Welcome to the kitchen!</p>
+  <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+</div>
+
+<div class="overlay" id="overlay-title">
+  <div class="card">
+    <p class="card-glyph">🍳</p>
+    <h1>Dapur Kilat</h1>
+    <p class="tagline">Rush Kitchen — a 3-minute lunch rush in a Jakarta street kitchen.</p>
+    <p>Cook the tickets on the order board before their clocks run out. Pick
+    ingredients from the counter, build the dish on your plate, and serve it
+    while it is still hot. Wrong ingredients cost points; fast serves earn
+    tips and grow your combo.</p>
+    <ul class="dishes">
+      <li>🍛 <b>Nasi Goreng</b> — Rice, Egg, Chilli, Chicken</li>
+      <li>🍜 <b>Mie Ayam</b> — Noodle, Chicken, Greens, Egg</li>
+      <li>🍢 <b>Sate Ayam</b> — Skewer, Chicken, Peanut, Chilli</li>
+      <li>🥗 <b>Gado-Gado</b> — Greens, Egg, Peanut, Chilli</li>
+    </ul>
+    <p class="keys">Mouse: click tickets, ingredients, Serve · Keyboard: 1–8 ingredients,
+    Q/W/E tickets, Tab cycle, Space serve, X clear, P pause, R restart</p>
+    <button type="button" id="btn-play" class="serve big">▶ Start shift</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-over" hidden>
+  <div class="card">
+    <p class="card-glyph">🏁</p>
+    <h1>Shift Report</h1>
+    <p class="stars" id="final-stars">☆☆☆</p>
+    <p class="verdict" id="final-verdict"></p>
+    <dl class="report">
+      <div><dt>Score</dt><dd id="final-score">0</dd></div>
+      <div><dt>Served</dt><dd id="final-served">0</dd></div>
+      <div><dt>Failed</dt><dd id="final-failed">0</dd></div>
+      <div><dt>Best combo</dt><dd id="final-best-combo">×0</dd></div>
+      <div><dt>Accuracy</dt><dd id="final-accuracy">—</dd></div>
+    </dl>
+    <button type="button" id="btn-again" class="serve big">↻ Cook again — R</button>
+  </div>
+</div>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
